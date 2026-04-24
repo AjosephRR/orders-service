@@ -1,10 +1,11 @@
-import pytest
 from decimal import Decimal
 
-from orders_service.domain.value_objects.money import Money
+import pytest
+
 from orders_service.domain.exceptions.domain_exceptions import (
     InvalidOrderTotalError,
 )
+from orders_service.domain.value_objects.money import Money
 
 
 def test_money_normaliza_a_dos_decimales() -> None:

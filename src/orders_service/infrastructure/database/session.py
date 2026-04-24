@@ -1,8 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "sqlite:///./orders.db"
+from orders_service.config import settings
 
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(
+    settings.database_url,
+    echo=settings.db_echo,
+)
 
-SessionLocal = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+)

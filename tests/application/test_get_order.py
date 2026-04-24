@@ -1,11 +1,12 @@
 from decimal import Decimal
+
 import pytest
 
+from orders_service.application.exceptions import OrderNotFoundError
 from orders_service.application.use_cases.get_order import GetOrder
 from orders_service.domain.entities.order import Order
-from orders_service.domain.value_objects.order_id import OrderId
 from orders_service.domain.value_objects.money import Money
-from orders_service.application.exceptions import OrderNotFoundError
+from orders_service.domain.value_objects.order_id import OrderId
 from tests.application.fake_order_repository import InMemoryOrderRepository
 
 

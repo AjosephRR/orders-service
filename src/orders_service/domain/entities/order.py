@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import UTC, datetime
 
 from orders_service.domain.exceptions.domain_exceptions import (
     InvalidOrderStateTransitionError,
@@ -7,7 +7,6 @@ from orders_service.domain.exceptions.domain_exceptions import (
 from orders_service.domain.value_objects.money import Money
 from orders_service.domain.value_objects.order_id import OrderId
 from orders_service.domain.value_objects.order_status import OrderStatus
-from datetime import datetime, UTC
 
 
 @dataclass

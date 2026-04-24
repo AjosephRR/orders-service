@@ -1,15 +1,18 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
 from uuid import UUID
+
+from fastapi import APIRouter, Depends, HTTPException
+
+from orders_service.api.dependencies import get_current_user, get_repository
 from orders_service.api.schemas.orders import (
     OrderCreateRequest,
     OrderResponse,
 )
+from orders_service.application.exceptions import OrderNotFoundError
+from orders_service.application.ports.order_repository import OrderRepository
 from orders_service.application.use_cases.create_order import CreateOrder
 from orders_service.application.use_cases.get_order import GetOrder
-from orders_service.application.exceptions import OrderNotFoundError
 from orders_service.domain.value_objects.order_id import OrderId
-from orders_service.api.dependencies import get_repository
-
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
@@ -17,8 +20,9 @@ router = APIRouter(prefix="/orders", tags=["orders"])
 @router.post("/", response_model=OrderResponse)
 def create_order(
     request: OrderCreateRequest,
-    repository=Depends(get_repository),
-):
+    repository: Annotated[OrderRepository, Depends(get_repository)],
+    user: Annotated[str, Depends(get_current_user)],
+) -> OrderResponse:
     use_case = CreateOrder(repository)
     order = use_case.execute(request.total)
 
@@ -31,7 +35,11 @@ def create_order(
 
 
 @router.get("/{order_id}", response_model=OrderResponse)
-def get_order(order_id: UUID, repository=Depends(get_repository)):
+def get_order(
+    order_id: UUID,
+    repository: Annotated[OrderRepository, Depends(get_repository)],
+    user: Annotated[str, Depends(get_current_user)],
+) -> OrderResponse:
     use_case = GetOrder(repository)
 
     try:

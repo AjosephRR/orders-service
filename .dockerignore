@@ -1,0 +1,10 @@
+*
+
+!alembic/
+!alembic/**
+!alembic.ini
+!entrypoint.sh
+!poetry.lock
+!pyproject.toml
+!src/
+!src/**

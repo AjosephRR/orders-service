@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-ansi
+
+      - name: Lint
+        run: poetry run ruff check .
+
+      - name: Format check
+        run: poetry run black --check .
+
+      - name: Type check
+        run: poetry run mypy src
+
+      - name: Tests
+        run: poetry run pytest --cov=orders_service --cov-report=term-missing --cov-fail-under=85
+
+      - name: Export runtime requirements
+        run: poetry run python scripts/export_runtime_requirements.py --output .audit/runtime-requirements.txt
+
+      - name: Security audit
+        run: poetry run pip-audit --requirement .audit/runtime-requirements.txt --no-deps
+
+      - name: Safety audit
+        env:
+          SAFETY_API_KEY: ${{ secrets.SAFETY_API_KEY }}
+        run: |
+          if [ -n "${SAFETY_API_KEY}" ]; then
+            poetry run safety --key "${SAFETY_API_KEY}" scan --target .
+          else
+            poetry run safety check
+          fi

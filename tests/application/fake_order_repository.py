@@ -6,7 +6,6 @@ from orders_service.domain.value_objects.order_id import OrderId
 
 
 class InMemoryOrderRepository(OrderRepository):
-
     def __init__(self) -> None:
         self._orders: Dict[str, Order] = {}
 

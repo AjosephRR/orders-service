@@ -4,3 +4,8 @@
 .ruff_cache/
 __pycache__/
 *.py[cod]
+.env
+.coverage
+htmlcov/
+orders.db
+.audit/

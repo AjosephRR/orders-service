@@ -13,7 +13,6 @@ from orders_service.infrastructure.database.models import OrderModel
 
 
 class SqlAlchemyOrderRepository(OrderRepository):
-
     def __init__(self, session: Session) -> None:
         self._session = session
 

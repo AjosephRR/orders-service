@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from decimal import Decimal, ROUND_HALF_UP, getcontext
+from decimal import ROUND_HALF_UP, Decimal, getcontext
 
 from orders_service.domain.exceptions.domain_exceptions import (
     InvalidOrderTotalError,

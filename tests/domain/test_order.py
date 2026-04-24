@@ -1,13 +1,14 @@
-import pytest
 from decimal import Decimal
 
+import pytest
+
 from orders_service.domain.entities.order import Order
-from orders_service.domain.value_objects.money import Money
-from orders_service.domain.value_objects.order_id import OrderId
-from orders_service.domain.value_objects.order_status import OrderStatus
 from orders_service.domain.exceptions.domain_exceptions import (
     InvalidOrderStateTransitionError,
 )
+from orders_service.domain.value_objects.money import Money
+from orders_service.domain.value_objects.order_id import OrderId
+from orders_service.domain.value_objects.order_status import OrderStatus
 
 
 def create_order() -> Order:
