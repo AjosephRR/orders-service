@@ -572,13 +572,16 @@ git push origin main --tags
 ## Comandos Rapidos
 
 ```powershell
-.\.venv\Scripts\ruff check .
-.\.venv\Scripts\black --check .
-.\.venv\Scripts\python.exe -m pytest --cov=orders_service --cov-report=term-missing --cov-fail-under=85
-.\.venv\Scripts\python.exe -m mypy src
-.\.venv\Scripts\python.exe scripts/export_runtime_requirements.py --output .audit/runtime-requirements.txt
-.\.venv\Scripts\pip-audit --requirement .audit/runtime-requirements.txt --no-deps
-.\.venv\Scripts\safety check
+tree /F src
+poetry run ruff check .
+poetry run black --check .
+poetry run python -m mypy src
+poetry run python -m pytest --cov=orders_service --cov-report=term-missing --cov-fail-under=85
+poetry run python scripts/export_runtime_requirements.py --output .audit/runtime-requirements.txt
+poetry run pip-audit --requirement .audit/runtime-requirements.txt --no-deps
+poetry run safety check
+poetry run python -m alembic upgrade head
+poetry run python -m uvicorn orders_service.api.main:app --reload
 docker build -t orders-service .
 docker run --rm -p 8000:8000 --env-file .env orders-service
 ```
