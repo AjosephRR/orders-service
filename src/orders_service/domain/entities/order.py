@@ -13,6 +13,10 @@ from orders_service.domain.value_objects.order_status import OrderStatus
 class Order:
     id: OrderId
     total: Money
+    customer_name: str | None = None
+    customer_email: str | None = None
+    shipping_address: str | None = None
+    notes: str | None = None
     status: OrderStatus = field(default=OrderStatus.PENDING)
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 

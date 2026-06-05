@@ -24,6 +24,10 @@ def test_sqlalchemy_repository_save_and_get() -> None:
     order = Order(
         id=OrderId.new(),
         total=Money(Decimal("150.00")),
+        customer_name="Angel Rivera",
+        customer_email="angelrivera@example.com",
+        shipping_address="Calle Principal 123, CDMX",
+        notes="Entregar en horario matutino.",
     )
 
     repository.save(order)
@@ -33,5 +37,9 @@ def test_sqlalchemy_repository_save_and_get() -> None:
     assert retrieved is not None
     assert retrieved.id == order.id
     assert retrieved.total.amount == Decimal("150.00")
+    assert retrieved.customer_name == "Angel Rivera"
+    assert retrieved.customer_email == "angelrivera@example.com"
+    assert retrieved.shipping_address == "Calle Principal 123, CDMX"
+    assert retrieved.notes == "Entregar en horario matutino."
     assert retrieved.status == order.status
     assert retrieved.created_at == order.created_at

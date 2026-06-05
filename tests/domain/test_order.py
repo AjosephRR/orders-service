@@ -20,6 +20,31 @@ def test_order_inicia_en_pending() -> None:
     assert order.status == OrderStatus.PENDING
 
 
+def test_order_puede_tener_customer_name() -> None:
+    order = Order(
+        id=OrderId.new(),
+        total=Money(Decimal("100.00")),
+        customer_name="Angel Rivera",
+    )
+
+    assert order.customer_name == "Angel Rivera"
+
+
+def test_order_puede_tener_campos_adicionales_del_cliente() -> None:
+    order = Order(
+        id=OrderId.new(),
+        total=Money(Decimal("100.00")),
+        customer_name="Angel Rivera",
+        customer_email="angelrivera@example.com",
+        shipping_address="Calle Principal 123, CDMX",
+        notes="Entregar en horario matutino.",
+    )
+
+    assert order.customer_email == "angelrivera@example.com"
+    assert order.shipping_address == "Calle Principal 123, CDMX"
+    assert order.notes == "Entregar en horario matutino."
+
+
 def test_mark_as_paid_desde_pending() -> None:
     order = create_order()
     order.mark_as_paid()

@@ -24,11 +24,21 @@ def create_order(
     user: Annotated[str, Depends(get_current_user)],
 ) -> OrderResponse:
     use_case = CreateOrder(repository)
-    order = use_case.execute(request.total)
+    order = use_case.execute(
+        total=request.total,
+        customer_name=request.customer_name,
+        customer_email=request.customer_email,
+        shipping_address=request.shipping_address,
+        notes=request.notes,
+    )
 
     return OrderResponse(
         id=str(order.id),
         total=order.total.amount,
+        customer_name=order.customer_name,
+        customer_email=order.customer_email,
+        shipping_address=order.shipping_address,
+        notes=order.notes,
         status=order.status.value,
         created_at=order.created_at,
     )
@@ -50,6 +60,10 @@ def get_order(
     return OrderResponse(
         id=str(order.id),
         total=order.total.amount,
+        customer_name=order.customer_name,
+        customer_email=order.customer_email,
+        shipping_address=order.shipping_address,
+        notes=order.notes,
         status=order.status.value,
         created_at=order.created_at,
     )

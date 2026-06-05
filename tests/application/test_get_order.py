@@ -12,7 +12,14 @@ from tests.application.fake_order_repository import InMemoryOrderRepository
 
 def test_get_order_retorna_orden_existente() -> None:
     repository = InMemoryOrderRepository()
-    order = Order(id=OrderId.new(), total=Money(Decimal("50.00")))
+    order = Order(
+        id=OrderId.new(),
+        total=Money(Decimal("50.00")),
+        customer_name="Angel Rivera",
+        customer_email="angelrivera@example.com",
+        shipping_address="Calle Principal 123, CDMX",
+        notes="Entregar en horario matutino.",
+    )
     repository.save(order)
 
     use_case = GetOrder(repository)
@@ -20,6 +27,10 @@ def test_get_order_retorna_orden_existente() -> None:
     result = use_case.execute(order.id)
 
     assert result.id == order.id
+    assert result.customer_name == "Angel Rivera"
+    assert result.customer_email == "angelrivera@example.com"
+    assert result.shipping_address == "Calle Principal 123, CDMX"
+    assert result.notes == "Entregar en horario matutino."
 
 
 def test_get_order_lanza_error_si_no_existe() -> None:

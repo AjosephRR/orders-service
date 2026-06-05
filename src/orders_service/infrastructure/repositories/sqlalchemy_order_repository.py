@@ -20,6 +20,10 @@ class SqlAlchemyOrderRepository(OrderRepository):
         model = OrderModel(
             id=str(order.id),
             total=order.total.amount,
+            customer_name=order.customer_name,
+            customer_email=order.customer_email,
+            shipping_address=order.shipping_address,
+            notes=order.notes,
             status=order.status.value,
             created_at=order.created_at,
         )
@@ -36,6 +40,10 @@ class SqlAlchemyOrderRepository(OrderRepository):
         return Order(
             id=OrderId(UUID(str(model.id))),
             total=Money(Decimal(model.total)),
+            customer_name=model.customer_name,
+            customer_email=model.customer_email,
+            shipping_address=model.shipping_address,
+            notes=model.notes,
             status=OrderStatus(model.status),
             created_at=model.created_at.replace(tzinfo=UTC),
         )

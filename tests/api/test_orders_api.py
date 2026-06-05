@@ -21,11 +21,21 @@ def test_create_order_endpoint():
 
     response = client.post(
         "/orders/",
-        json={"total": 123.45},
+        json={
+            "total": 123.45,
+            "customer_name": "Angel Rivera",
+            "customer_email": "angelrivera@example.com",
+            "shipping_address": "Calle Principal 123, CDMX",
+            "notes": "Entregar en horario matutino.",
+        },
         headers={"Authorization": f"Bearer {token}"},
     )
 
     assert response.status_code == 200
+    assert response.json()["customer_name"] == "Angel Rivera"
+    assert response.json()["customer_email"] == "angelrivera@example.com"
+    assert response.json()["shipping_address"] == "Calle Principal 123, CDMX"
+    assert response.json()["notes"] == "Entregar en horario matutino."
 
 
 def test_get_order_success():
@@ -33,7 +43,13 @@ def test_get_order_success():
 
     create_response = client.post(
         "/orders/",
-        json={"total": 50},
+        json={
+            "total": 50,
+            "customer_name": "Angel Rivera",
+            "customer_email": "angelrivera@example.com",
+            "shipping_address": "Calle Principal 123, CDMX",
+            "notes": "Entregar en horario matutino.",
+        },
         headers={"Authorization": f"Bearer {token}"},
     )
 
@@ -45,6 +61,10 @@ def test_get_order_success():
     )
 
     assert response.status_code == 200
+    assert response.json()["customer_name"] == "Angel Rivera"
+    assert response.json()["customer_email"] == "angelrivera@example.com"
+    assert response.json()["shipping_address"] == "Calle Principal 123, CDMX"
+    assert response.json()["notes"] == "Entregar en horario matutino."
 
 
 def test_get_order_invalid_uuid():
